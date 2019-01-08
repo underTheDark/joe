@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body,ul,li{
+				padding: 0;
+				margin: 0;
+			}
+			li{
+				list-style: none;
+			}
+			#floorNav{
+				display: none;
+				position: fixed;
+				top: 100px;
+				left: 50px;
+				width: 32px;
+				border: 1px solid #CECECE;
+			}
+			#floorNav li{
+				position: relative;
+				width: 32px;
+				height: 32px;
+				border-bottom: 1px solid #CECECE;
+				text-align: center;
+				line-height: 32px;
+				font-size: 12px;
+			}
+			
+			#floorNav span{
+				display: none;
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 32px;
+				height: 32px;
+				background: red;
+				color: white;
+			}
+			
+			#floorNav li:hover span,#floorNav li.hover span{
+				display: block;
+			}
+			
+			#floorNav li:last-child{
+				background: red;
+				color: white;
+				border-bottom: none;
+			}
+			#header,#footer{
+				width: 1000px;
+				height: 1000px;
+				background: darkgoldenrod;
+				margin: 0 auto;
+			}
+			#content{
+				
+			}
+			#content li{
+				width:1000px;
+				height: 600px;
+				margin: 0 auto;
+				font-size: 40px;
+				text-align: center;
+				line-height: 600px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="floorNav">
+			<ul>
+				<li>1F<span>服饰</span></li>
+				<li>2F<span>美妆</span></li>
+				<li>3F<span>手机</span></li>
+				<li>4F<span>家电</span></li>
+				<li>5F<span>数码</span></li>
+				<li>6F<span>运动</span></li>
+				<li>7F<span>居家</span></li>
+				<li>8F<span>母婴</span></li>
+				<li>9F<span>食品</span></li>
+				<li>10F<span>图书</span></li>
+				<li>11F<span>服务</span></li>
+				<li>TOP</li>
+			</ul>
+		</div>
+		<div id="header"></div>
+		<div id="content">
+			<ul>
+				<li style="background: #8B0000;">服饰</li>
+				<li style="background: #123;">美妆</li>
+				<li style="background: #667;">手机</li>
+				<li style="background: #558;">家电</li>
+				<li style="background: #900;">数码</li>
+				<li style="background: #456;">运动</li>
+				<li style="background: #789;">居家</li>
+				<li style="background: #234;">母婴</li>
+				<li style="background: #567;">食品</li>
+				<li style="background: #887;">图书</li>
+				<li style="background: #980;">服务</li>
+			</ul>
+		</div>
+		<div id="footer"></div>
+		<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function(){
+				var flag = true;
+				$(window).scroll(function(){
+					//显示隐藏
+					var scrollTop = $(this).scrollTop();
+					if(scrollTop >= 300){
+						$("#floorNav").fadeIn();
+					}else{
+						$("#floorNav").fadeOut();
+					}
+					
+					if(flag){
+					
+					//让scrollTop和每一个区块比较
+					
+					$("#content").find("li").each(function(){
+						if(scrollTop>= $(this).offset().top - $(this).outerHeight()/2){
+							var index = $(this).index();
+							$("#floorNav").find("li").eq(index).addClass("hover")
+							.siblings().removeClass("hover");
+						}
+					})
+					}
+				});
+				
+				$("#floorNav li:not(:last)").click(function(){
+					flag = false;
+					var index = $(this).index();
+					$(this).addClass("hover").siblings().removeClass("hover");
+					$("body,html").stop().animate({"scrollTop":$("#content li").eq(index).offset().top},500,function(){
+						flag = true;
+					});
+				});
+				
+				$("#floorNav li:last").click(function(){
+					flag = false;
+					$("body,html").stop().animate({"scrollTop":0},500,function(){
+						flag = true;
+						//$("#floorNav").fadeOut();
+					});
+				})
+			})
+		</script>
+	</body>
+</html>
